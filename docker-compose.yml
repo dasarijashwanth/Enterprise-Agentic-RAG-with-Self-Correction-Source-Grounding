@@ -1,0 +1,9 @@
+# Day 1 skeleton: backend service only.
+# The frontend service lands on Day 6, per the MD roadmap.
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
