@@ -2,3 +2,10 @@ fastapi
 uvicorn[standard]
 pydantic>=2
 pydantic-settings
+# Day 2: PDF parsing (PyMuPDF), LEANN dense index, multipart uploads.
+pymupdf
+leann
+python-multipart
+# Tests only.
+pytest
+httpx
