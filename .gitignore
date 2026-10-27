@@ -1,0 +1,6 @@
+# Local runtime artifacts, never committed.
+data/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
