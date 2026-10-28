@@ -5,9 +5,10 @@ disclosures, legal contracts, compliance audits), built exactly per the
 project spec: hybrid retrieval, LangGraph self-correction, visual source
 grounding with PDF bounding-box citations, and Langfuse observability.
 
-## Status: Day 2 (Tue Oct 27, 2026) — local only, not pushed
+## Status: Day 3 (Wed Oct 28, 2026) — Day 2 pushed, Day 3 built locally
 
-Day 1 scaffold plus Day 2 ingestion, built and verified locally:
+Day 1 scaffold plus Day 2 ingestion (pushed as `7a0eab5`) plus Day 3
+hybrid retrieval, built and verified locally:
 
 - `POST /api/v1/ingest` accepts a PDF upload, parses it with PyMuPDF
   (text plus word bounding boxes), chunks it into overlapping
@@ -17,8 +18,13 @@ Day 1 scaffold plus Day 2 ingestion, built and verified locally:
 - LEANN replaces Qdrant Cloud as the dense index (approved deviation;
   Day 7 README will document the swap). No `QDRANT_*` settings remain
   in config or `.env.example`.
-- Retrieval (BM25 + RRF + Cohere rerank) is Day 3 work and is
-  deliberately not started here.
+- `POST /api/v1/search` runs hybrid retrieval: LEANN dense search plus
+  BM25 over the same chunks, fused with reciprocal rank fusion, then
+  Cohere Rerank v3 over the fused top candidates. With no
+  `COHERE_API_KEY` set, or if the API call fails, retrieval degrades
+  gracefully to the fused order (`reranked: false`), so the endpoint
+  works fully offline. Every hit returns its chunk's page/bbox
+  grounding for Day 4's agent citations.
 
 ## Run locally
 
@@ -46,15 +52,18 @@ Notes:
 
 ```bash
 cd backend
-~/.venv-verirag/bin/python -m pytest tests/test_ingest.py -q   # 6 tests, offline
+~/.venv-verirag/bin/python -m pytest tests/ -q   # 18 tests, offline
 TMPDIR=$HOME/.tmp-pip HF_HUB_DISABLE_XET=1 \
   ~/.venv-verirag/bin/python scripts/verify_ingest.py  # live endpoint + LEANN search
+TMPDIR=$HOME/.tmp-pip HF_HUB_DISABLE_XET=1 \
+  ~/.venv-verirag/bin/python scripts/verify_search.py  # live hybrid search
 ```
 
-The live script proves page/bbox metadata round-trips: a
+The live scripts prove page/bbox metadata round-trips: a
 "bounding boxes" query returns the page 2 chunk first, a
 "cross validation" query returns the page 1 chunk first, each with
-its bbox.
+its bbox, and the search script proves the fused ranking carries
+dense rank, BM25 rank, and RRF score on every hit.
 
 ## Roadmap (from the spec, one slice per day)
 
