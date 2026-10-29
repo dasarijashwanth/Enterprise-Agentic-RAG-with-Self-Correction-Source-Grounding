@@ -5,10 +5,11 @@ disclosures, legal contracts, compliance audits), built exactly per the
 project spec: hybrid retrieval, LangGraph self-correction, visual source
 grounding with PDF bounding-box citations, and Langfuse observability.
 
-## Status: Day 3 (Wed Oct 28, 2026) — Day 2 pushed, Day 3 built locally
+## Status: Day 4 (Thu Oct 29, 2026) — Day 3 pushed as `f27cae5`, Day 4 built locally
 
 Day 1 scaffold plus Day 2 ingestion (pushed as `7a0eab5`) plus Day 3
-hybrid retrieval, built and verified locally:
+hybrid retrieval (pushed as `f27cae5`) plus Day 4 LangGraph agent,
+built and verified locally:
 
 - `POST /api/v1/ingest` accepts a PDF upload, parses it with PyMuPDF
   (text plus word bounding boxes), chunks it into overlapping
@@ -25,6 +26,18 @@ hybrid retrieval, built and verified locally:
   gracefully to the fused order (`reranked: false`), so the endpoint
   works fully offline. Every hit returns its chunk's page/bbox
   grounding for Day 4's agent citations.
+- `POST /api/v1/ask` runs the Day 4 LangGraph self-correction agent:
+  retrieve (Day 3 hybrid retriever) -> grade each chunk's relevance
+  -> rewrite the query and retrieve again on a bounded loop (max 2
+  rewrites) when nothing grades relevant -> generate an answer whose
+  claims each carry a `[Page, X1, Y1, X2, Y2]` citation -> check every
+  claim against its cited chunk, with one bounded regeneration that
+  drops unsupported claims, then an honest gap report instead of a
+  hallucinated answer. All components are deterministic and run fully
+  offline with no API keys; LLM-backed graders/rewriters/generators
+  can be injected later through the same narrow interfaces. An empty
+  index or no relevant context returns an honest "I could not find"
+  answer, never a guess.
 
 ## Run locally
 
@@ -52,11 +65,12 @@ Notes:
 
 ```bash
 cd backend
-~/.venv-verirag/bin/python -m pytest tests/ -q   # 18 tests, offline
+~/.venv-verirag/bin/python -m pytest tests/ -q   # 30 tests, offline
 TMPDIR=$HOME/.tmp-pip HF_HUB_DISABLE_XET=1 \
   ~/.venv-verirag/bin/python scripts/verify_ingest.py  # live endpoint + LEANN search
 TMPDIR=$HOME/.tmp-pip HF_HUB_DISABLE_XET=1 \
   ~/.venv-verirag/bin/python scripts/verify_search.py  # live hybrid search
+~/.venv-verirag/bin/python scripts/verify_graph.py   # Day 4 agent end to end, offline
 ```
 
 The live scripts prove page/bbox metadata round-trips: a
