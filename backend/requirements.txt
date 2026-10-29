@@ -6,6 +6,9 @@ pydantic-settings
 pymupdf
 leann
 python-multipart
+# Day 4: LangGraph agent orchestration (pure Python, no torch).
+langgraph
+langchain-core
 # Tests only.
 pytest
 httpx
