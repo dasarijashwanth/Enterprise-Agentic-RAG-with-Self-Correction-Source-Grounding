@@ -8,10 +8,12 @@ HTTP 200, never an error, so an un-ingested service stays clean.
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from ...core.config import settings
+from ...core.observability import request_logger
+from ...core.security import rate_limit
 from ...services.retriever import CohereReranker, HybridRetriever
 
 router = APIRouter()
@@ -50,11 +52,16 @@ def build_retriever() -> HybridRetriever:
     )
 
 
-@router.post("/search", response_model=SearchResponse)
+@router.post(
+    "/search", response_model=SearchResponse, dependencies=[Depends(rate_limit)]
+)
 def search(req: SearchRequest) -> SearchResponse:
     if not req.query.strip():
         raise HTTPException(status_code=400, detail="Query must not be empty")
-    out = build_retriever().search(req.query, top_k=req.top_k)
+    with request_logger.timed("/api/v1/search") as extras:
+        out = build_retriever().search(req.query, top_k=req.top_k)
+        extras["result_count"] = len(out["results"])
+        extras["reranked"] = out["reranked"]
     return SearchResponse(
         query=out["query"],
         results=[SearchHit(**hit) for hit in out["results"]],
