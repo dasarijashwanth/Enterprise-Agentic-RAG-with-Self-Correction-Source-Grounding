@@ -9,6 +9,8 @@ python-multipart
 # Day 4: LangGraph agent orchestration (pure Python, no torch).
 langgraph
 langchain-core
+# Day 5: optional Langfuse tracing (inert unless both Langfuse keys set).
+langfuse
 # Tests only.
 pytest
 httpx
