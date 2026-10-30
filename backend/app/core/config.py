@@ -30,5 +30,13 @@ class Settings(BaseSettings):
     CHUNK_WORDS: int = 200
     CHUNK_OVERLAP_WORDS: int = 40
 
+    # Day 5: API-key auth + rate limits. VERIRAG_API_KEY unset means
+    # auth is disabled (local dev keeps working with no header).
+    VERIRAG_API_KEY: str = ""
+    VERIRAG_RATE_LIMIT_PER_MIN: int = 60
+
+    # Day 5: local runtime data (JSONL logs). Gitignored.
+    DATA_DIR: str = "data"
+
 
 settings = Settings()
