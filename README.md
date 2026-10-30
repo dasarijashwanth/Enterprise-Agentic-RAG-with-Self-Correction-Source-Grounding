@@ -5,11 +5,12 @@ disclosures, legal contracts, compliance audits), built exactly per the
 project spec: hybrid retrieval, LangGraph self-correction, visual source
 grounding with PDF bounding-box citations, and Langfuse observability.
 
-## Status: Day 4 (Thu Oct 29, 2026) — Day 3 pushed as `f27cae5`, Day 4 built locally
+## Status: Day 5 (Fri Oct 30, 2026) — Days 2-4 pushed (head `94b4215`, 30 commits), Day 5 built locally
 
 Day 1 scaffold plus Day 2 ingestion (pushed as `7a0eab5`) plus Day 3
-hybrid retrieval (pushed as `f27cae5`) plus Day 4 LangGraph agent,
-built and verified locally:
+hybrid retrieval (pushed as `f27cae5`) plus Day 4 LangGraph agent
+(pushed as `94b4215`) plus Day 5 SSE chat, feedback, logging,
+Langfuse tracing, and auth/rate limits, built and verified locally:
 
 - `POST /api/v1/ingest` accepts a PDF upload, parses it with PyMuPDF
   (text plus word bounding boxes), chunks it into overlapping
@@ -38,6 +39,29 @@ built and verified locally:
   can be injected later through the same narrow interfaces. An empty
   index or no relevant context returns an honest "I could not find"
   answer, never a guess.
+- `POST /api/v1/ask/stream` (Day 5) returns `text/event-stream`:
+  one `trace` event per agent node (retrieve, grade_documents,
+  rewrite_query, generate, check_hallucination), then one `answer`
+  event carrying the full Day 4 response payload, then `done`. The
+  non-streaming `/api/v1/ask` is unchanged. This powers Day 6's live
+  trace drawer.
+- `POST /api/v1/feedback` (Day 5) stores
+  `{query, answer, rating: up|down, comment?}` to
+  `data/feedback.jsonl` (gitignored), feeding the Day 7 eval loop.
+- Every ask/search request is logged as structured JSON to
+  `data/requests.jsonl` (gitignored): timestamp, endpoint, latency
+  ms, grounded flag, rewrite count, result count.
+- Langfuse tracing (Day 5, `langfuse` in requirements): activates
+  ONLY when `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` are both
+  set; with no keys everything runs exactly as before and the tracer
+  is a no-op. Keys are read from env (or a local `.env`) and are
+  never printed or logged.
+- Auth and rate limits (Day 5): `X-API-Key` header checked against
+  `VERIRAG_API_KEY` on ask, ask/stream, search, and feedback; when
+  the env var is unset, auth is disabled so local dev keeps working.
+  In-memory sliding-window limiter at `VERIRAG_RATE_LIMIT_PER_MIN`
+  (default 60) per key or client IP, HTTP 429 with `Retry-After` on
+  exceed.
 
 ## Run locally
 
@@ -65,7 +89,7 @@ Notes:
 
 ```bash
 cd backend
-~/.venv-verirag/bin/python -m pytest tests/ -q   # 30 tests, offline
+~/.venv-verirag/bin/python -m pytest tests/ -q   # 42 tests, offline
 TMPDIR=$HOME/.tmp-pip HF_HUB_DISABLE_XET=1 \
   ~/.venv-verirag/bin/python scripts/verify_ingest.py  # live endpoint + LEANN search
 TMPDIR=$HOME/.tmp-pip HF_HUB_DISABLE_XET=1 \
