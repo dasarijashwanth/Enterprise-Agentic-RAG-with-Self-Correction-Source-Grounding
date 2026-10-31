@@ -5,12 +5,31 @@ disclosures, legal contracts, compliance audits), built exactly per the
 project spec: hybrid retrieval, LangGraph self-correction, visual source
 grounding with PDF bounding-box citations, and Langfuse observability.
 
-## Status: Day 5 (Fri Oct 30, 2026) — Days 2-4 pushed (head `94b4215`, 30 commits), Day 5 built locally
+## Status: Day 6 (Sat Oct 31, 2026) — Days 2-5 pushed (head `61fbf4b`), Day 6 built locally
 
 Day 1 scaffold plus Day 2 ingestion (pushed as `7a0eab5`) plus Day 3
 hybrid retrieval (pushed as `f27cae5`) plus Day 4 LangGraph agent
 (pushed as `94b4215`) plus Day 5 SSE chat, feedback, logging,
-Langfuse tracing, and auth/rate limits, built and verified locally:
+Langfuse tracing, and auth/rate limits (pushed as `61fbf4b`), plus
+Day 6 Next.js frontend, built and verified locally:
+
+- `frontend/` is a Next.js 15 + TypeScript app (app router) with a
+  split-screen layout: the left panel is the chat (question input,
+  streaming answers over `POST /api/v1/ask/stream` SSE with a live
+  node indicator), and the right panel is the document context (PDF
+  upload via `POST /api/v1/ingest`, the indexed-document list, and
+  the latest answer's citations with page numbers and
+  `[X1, Y1, X2, Y2]` bounding boxes).
+- Each answer carries a grounded / not-grounded badge, a rewrite-count
+  badge, a trace drawer showing the agent's node trace, and thumbs
+  up/down feedback buttons wired to `POST /api/v1/feedback`.
+- The UI talks to the local backend at `http://localhost:8000`
+  (override with `NEXT_PUBLIC_API_URL`; optional `X-API-Key` via
+  `NEXT_PUBLIC_VERIRAG_API_KEY`) and handles offline fake-mode
+  responses gracefully: empty-index answers render the honest
+  "no documents indexed yet" message and prompt an upload.
+- `cd frontend && npm install && npm run build` compiles with zero
+  TypeScript errors.
 
 - `POST /api/v1/ingest` accepts a PDF upload, parses it with PyMuPDF
   (text plus word bounding boxes), chunks it into overlapping
@@ -109,5 +128,5 @@ dense rank, BM25 rank, and RRF score on every hit.
 - Day 3: Hybrid retrieval, dense plus BM25 with reciprocal rank fusion, Cohere Rerank v3.
 - Day 4: LangGraph agent, state, retrieval, relevance grading, query rewrite, generation with hallucination check, self-correction loop.
 - Day 5: SSE streaming chat endpoint, feedback and logging, Langfuse tracing, auth and rate limits.
-- Day 6: Next.js frontend, split-screen layout, chat box, PDF viewer with bounding-box highlight overlay, live trace drawer.
+- Day 6 (done, Sat Oct 31, 2026): Next.js 15 + TypeScript frontend with split-screen chat (SSE streaming answers, live node indicator), document context panel (PDF upload, indexed docs, page/bbox citations), trace drawer, grounded/rewrite badges, and thumbs up/down feedback wired to `/api/v1/feedback`; builds clean with zero TS errors.
 - Day 7: Ragas eval suite with golden dataset, final README, Dockerfile and compose, deployment playbook, FDE demo scenarios.
