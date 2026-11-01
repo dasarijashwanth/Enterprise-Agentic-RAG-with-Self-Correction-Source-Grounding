@@ -1,9 +1,37 @@
-# Day 1 skeleton: backend service only.
-# The frontend service lands on Day 6, per the MD roadmap.
+# VeriRAG Day 7: full stack. Backend (FastAPI agent) + frontend
+# (Next.js 15 chat UI). API keys come from the environment ONLY;
+# nothing key-like lives in this file or anywhere in the repo.
 services:
   backend:
     build: ./backend
     ports:
       - "8000:8000"
-    env_file:
-      - ./backend/.env
+    environment:
+      - VERIRAG_API_KEY=${VERIRAG_API_KEY:-}
+      - COHERE_API_KEY=${COHERE_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY:-}
+      - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY:-}
+    volumes:
+      # Persist the LEANN index, uploads, and feedback/request logs.
+      - verirag-data:/code/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  verirag-data:
