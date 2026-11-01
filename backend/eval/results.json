@@ -1,0 +1,353 @@
+{
+  "summary": {
+    "n_questions": 14,
+    "n_answerable": 10,
+    "n_adversarial": 4,
+    "faithfulness_mean": 1.0,
+    "citation_precision_mean": 0.8667,
+    "citation_recall_mean": 1.0,
+    "context_recall_mean": 1.0,
+    "answer_rate": 1.0,
+    "decline_honesty_rate": 1.0,
+    "rewrite_bound_ok_all": true,
+    "max_rewrites_observed": 2,
+    "avg_latency_ms": 3.55,
+    "honesty_note": "Deterministic offline harness: measures pipeline correctness (grounding guarantee, citation validity, rewrite bound), not LLM reasoning quality. No benchmark numbers are claimed; these are measured on this corpus with the offline components."
+  },
+  "questions": [
+    {
+      "question": "what is cross validation",
+      "adversarial": false,
+      "expected": [
+        "ml-eval.pdf:p1:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 3,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 0.3333,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "ml-eval.pdf:p1:c0",
+        "ml-eval.pdf:p2:c0",
+        "ml-eval.pdf:p5:c0"
+      ],
+      "relevant": [
+        "ml-eval.pdf:p1:c0",
+        "ml-eval.pdf:p2:c0",
+        "ml-eval.pdf:p5:c0"
+      ],
+      "bbox_citations_in_answer": 3,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 17.19
+    },
+    {
+      "question": "how does overfitting show up in evaluation",
+      "adversarial": false,
+      "expected": [
+        "ml-eval.pdf:p2:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "ml-eval.pdf:p2:c0"
+      ],
+      "relevant": [
+        "ml-eval.pdf:p2:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 2.3
+    },
+    {
+      "question": "define precision and recall",
+      "adversarial": false,
+      "expected": [
+        "ml-eval.pdf:p3:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "ml-eval.pdf:p3:c0"
+      ],
+      "relevant": [
+        "ml-eval.pdf:p3:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 2.03
+    },
+    {
+      "question": "what is ragas",
+      "adversarial": false,
+      "expected": [
+        "ml-eval.pdf:p4:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "ml-eval.pdf:p4:c0"
+      ],
+      "relevant": [
+        "ml-eval.pdf:p4:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 1.9
+    },
+    {
+      "question": "how do bounding boxes work",
+      "adversarial": false,
+      "expected": [
+        "rag-guide.pdf:p1:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "rag-guide.pdf:p1:c0"
+      ],
+      "relevant": [
+        "rag-guide.pdf:p1:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 1.94
+    },
+    {
+      "question": "what is hybrid retrieval",
+      "adversarial": false,
+      "expected": [
+        "rag-guide.pdf:p2:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 3,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 0.3333,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "rag-guide.pdf:p2:c0",
+        "ml-eval.pdf:p4:c0",
+        "rag-guide.pdf:p3:c0"
+      ],
+      "relevant": [
+        "rag-guide.pdf:p2:c0",
+        "ml-eval.pdf:p4:c0",
+        "rag-guide.pdf:p3:c0"
+      ],
+      "bbox_citations_in_answer": 3,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 1.94
+    },
+    {
+      "question": "explain the rewrite loop in this agent",
+      "adversarial": false,
+      "expected": [
+        "rag-guide.pdf:p3:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "rag-guide.pdf:p3:c0"
+      ],
+      "relevant": [
+        "rag-guide.pdf:p3:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 1.84
+    },
+    {
+      "question": "how to grow tomatoes",
+      "adversarial": false,
+      "expected": [
+        "gardening.pdf:p1:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "gardening.pdf:p1:c0"
+      ],
+      "relevant": [
+        "gardening.pdf:p1:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 1.96
+    },
+    {
+      "question": "what is compost used for",
+      "adversarial": false,
+      "expected": [
+        "gardening.pdf:p2:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "gardening.pdf:p2:c0"
+      ],
+      "relevant": [
+        "gardening.pdf:p2:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 1.84
+    },
+    {
+      "question": "how does rate limiting work here",
+      "adversarial": false,
+      "expected": [
+        "rag-guide.pdf:p4:c0"
+      ],
+      "grounded": true,
+      "honest_decline": false,
+      "n_claims": 1,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [
+        "rag-guide.pdf:p4:c0"
+      ],
+      "relevant": [
+        "rag-guide.pdf:p4:c0"
+      ],
+      "bbox_citations_in_answer": 1,
+      "rewrites": 0,
+      "rewrite_bound_ok": true,
+      "latency_ms": 1.81
+    },
+    {
+      "question": "quantum banana telephone",
+      "adversarial": true,
+      "expected": [],
+      "grounded": false,
+      "honest_decline": true,
+      "n_claims": 0,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [],
+      "relevant": [],
+      "bbox_citations_in_answer": 0,
+      "rewrites": 2,
+      "rewrite_bound_ok": true,
+      "latency_ms": 3.88
+    },
+    {
+      "question": "what is the capital of france",
+      "adversarial": true,
+      "expected": [],
+      "grounded": false,
+      "honest_decline": true,
+      "n_claims": 0,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [],
+      "relevant": [],
+      "bbox_citations_in_answer": 0,
+      "rewrites": 2,
+      "rewrite_bound_ok": true,
+      "latency_ms": 3.69
+    },
+    {
+      "question": "explain backpropagation from scratch",
+      "adversarial": true,
+      "expected": [],
+      "grounded": false,
+      "honest_decline": true,
+      "n_claims": 0,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [],
+      "relevant": [],
+      "bbox_citations_in_answer": 0,
+      "rewrites": 2,
+      "rewrite_bound_ok": true,
+      "latency_ms": 3.64
+    },
+    {
+      "question": "who directed the 1998 world cup final",
+      "adversarial": true,
+      "expected": [],
+      "grounded": false,
+      "honest_decline": true,
+      "n_claims": 0,
+      "n_unsupported": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "context_recall": 1.0,
+      "cited": [],
+      "relevant": [],
+      "bbox_citations_in_answer": 0,
+      "rewrites": 2,
+      "rewrite_bound_ok": true,
+      "latency_ms": 3.68
+    }
+  ]
+}
